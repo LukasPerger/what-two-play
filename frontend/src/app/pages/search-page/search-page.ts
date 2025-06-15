@@ -1,8 +1,6 @@
 import {Component, signal} from '@angular/core';
 import {HlmCommandImports} from '@spartan-ng/helm/command';
 import {HlmIconDirective} from '@spartan-ng/helm/icon';
-import {HlmButtonDirective} from '@spartan-ng/helm/button';
-import {HlmPopoverContentDirective} from '@spartan-ng/helm/popover';
 import {NgIcon, provideIcons} from '@ng-icons/core';
 import {lucideSearch} from '@ng-icons/lucide';
 import {FormsModule} from '@angular/forms';
@@ -14,11 +12,10 @@ import {BrnPopoverImports} from '@spartan-ng/brain/popover';
   imports: [
     HlmCommandImports,
     HlmIconDirective,
-    HlmButtonDirective,
-    HlmPopoverContentDirective,
     NgIcon,
     FormsModule,
     BrnPopoverImports,
+    HlmCommandImports,
   ],
   templateUrl: './search-page.html',
   styleUrl: './search-page.css',
