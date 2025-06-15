@@ -30,6 +30,15 @@
       ],
       "@spartan-ng/helm/icon": [
         ".\\src/libs/ui/ui-icon-helm/src/index.ts"
+      ],
+      "@spartan-ng/helm/popover": [
+        ".\\src/libs/ui/ui-popover-helm/src/index.ts"
+      ],
+      "@spartan-ng/helm/slider": [
+        ".\\src/libs/ui/ui-slider-helm/src/index.ts"
+      ],
+      "@spartan-ng/helm/command": [
+        ".\\src/libs/ui/ui-command-helm/src/index.ts"
       ]
     }
   },
