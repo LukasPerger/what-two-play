@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>WhatTwoPlay.Persistence</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="StackExchange.Redis" Version="2.8.41" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WhatTwoPlay.Shared\WhatTwoPlay.Shared.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Model\" />
+    <Folder Include="Repositories\" />
+    <Folder Include="Util\" />
+  </ItemGroup>
+</Project>
