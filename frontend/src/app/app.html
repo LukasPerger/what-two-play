@@ -1,0 +1,24 @@
+<header class="block sticky w-full top-0 z-40 bg-background/20 bg-blur-lg p-2 sm:px-4 border-b border-border">
+  <div class="mx-auto flex w-full max-w-screen-xl items-center justify-between">
+    WhatTwoPlay
+    <nav class="flex items-center">
+      <div class="hidden sm:flex sm:space-x-2">
+        <a routerLink="/landing"
+           routerLinkActive="!opacity-100"
+           class="disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2
+           focus-visible:ring-offset-2 focus-visible:ring-ring font-medium h-9 hover:underline inline-flex items-center
+           justify-center opacity-70 px-3 ring-offset-background rounded-md text-primary text-sm transition-colors underline-offset-4">Home</a>
+        <a
+          routerLink="/battle"
+          routerLinkActive="!opacity-100"
+          class="disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2
+          focus-visible:ring-offset-2 focus-visible:ring-ring font-medium h-9 hover:underline inline-flex items-center
+          justify-center opacity-70 px-3 ring-offset-background rounded-md text-primary text-sm transition-colors underline-offset-4">Battle</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<router-outlet>
+
+</router-outlet>

@@ -1,0 +1,12 @@
+<div hlmCard class="w-[350px] bg-neutral-900">
+  <div hlmCardHeader>
+    <h3 hlmCardTitle class="text-xl font-semibold">
+      <img [src]="user().profileImageLink" [alt]="user().profileName" class="w-12 h-12 rounded-full inline-block mr-3">
+      {{ user().profileName }}
+    </h3>
+  </div>
+  <div hlmCardContent>
+    <p class="text-sm text-muted-foreground">Steam ID: {{ user().profileId }}</p>
+  </div>
+</div>
+
