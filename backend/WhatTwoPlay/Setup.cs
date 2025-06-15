@@ -2,6 +2,7 @@ using WhatTwoPlay.Core;
 using WhatTwoPlay.Core.Util;
 using WhatTwoPlay.Util;
 using Serilog;
+using WhatTwoPlay.Cache.Util;
 
 namespace WhatTwoPlay;
 
@@ -14,6 +15,7 @@ public static class Setup
                                               bool isDev)
     {
         services.ConfigureCore();
+        services.ConfigureCache(configurationManager);
     }
 
     public static Settings LoadAndConfigureSettings(this IServiceCollection services, IConfigurationManager configurationManager)

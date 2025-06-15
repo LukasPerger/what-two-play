@@ -1,16 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <RootNamespace>WhatTwoPlay.Persistence</RootNamespace>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="StackExchange.Redis" Version="2.8.41" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\WhatTwoPlay.Shared\WhatTwoPlay.Shared.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Model\" />
-    <Folder Include="Repositories\" />
-    <Folder Include="Util\" />
-  </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.2"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.0"/>
+    </ItemGroup>
+    
+    <ItemGroup>
+        <ProjectReference Include="..\WhatTwoPlay.Shared\WhatTwoPlay.Shared.csproj"/>
+    </ItemGroup>
+    
+    <ItemGroup>
+        <Folder Include="Model\"/>
+        <Folder Include="Repositories\"/>
+    </ItemGroup>
+    
 </Project>
