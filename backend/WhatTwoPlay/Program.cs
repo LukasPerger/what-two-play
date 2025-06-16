@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using WhatTwoPlay;
 using WhatTwoPlay.Shared;
 using WhatTwoPlay.Util;
@@ -19,6 +20,17 @@ builder.Services.AddCors(settings);
 builder.Services.AddControllers(o => { o.ModelBinderProviders.Insert(0, new NodaTimeModelBinderProvider()); })
        .AddJsonOptions(o => ConfigureJsonSerialization(o, isDev));
 builder.Services.ConfigureAdditionalRouteConstraints();
+builder.Services.AddAuthentication(options =>
+       {
+           options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+           options.DefaultChallengeScheme = "Steam";
+       })
+       .AddCookie()
+       .AddSteam(options =>
+       {
+           options.ApplicationKey = "WEB_API_KEY"; //TODO
+           options.CallbackPath = "/signin-steam";
+       });
 
 var app = builder.Build();
 
