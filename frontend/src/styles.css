@@ -12,6 +12,10 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
+button{
+  cursor: pointer !important;
+}
+
 
 :root {
   --font-sans: ''
