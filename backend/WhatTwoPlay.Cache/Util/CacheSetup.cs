@@ -21,14 +21,14 @@ public static class CacheSetup
         services.AddSingleton<IConnectionMultiplexer>(sp => ConnectionMultiplexer.Connect(redisConfig));
         services.AddSingleton<IDatabase>(sp =>
         {
-            var connection = sp.GetRequiredService<IConnectionMultiplexer>();
-            var db = connection.GetDatabase();
+            IConnectionMultiplexer connection = sp.GetRequiredService<IConnectionMultiplexer>();
+            IDatabase db = connection.GetDatabase();
 
             return db;
         });
-        services.AddScoped<IJsonCommands>(sp =>
+        services.AddScoped<IJsonCommandsAsync>(sp =>
         {
-            var db = sp.GetRequiredService<IDatabase>();
+            IDatabase db = sp.GetRequiredService<IDatabase>();
 
             return db.JSON();
         });

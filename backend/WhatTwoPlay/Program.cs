@@ -1,11 +1,12 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using AspNet.Security.OpenId.Steam;
+using DotNetEnv;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using WhatTwoPlay;
 using WhatTwoPlay.Shared;
 using WhatTwoPlay.Util;
 using Microsoft.AspNetCore.Mvc;
-using NodaTime.Serialization.SystemTextJson;
+
+Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,18 +24,28 @@ builder.Services.ConfigureAdditionalRouteConstraints();
 builder.Services.AddAuthentication(options =>
        {
            options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-           options.DefaultChallengeScheme = "Steam";
+           options.DefaultChallengeScheme = SteamAuthenticationDefaults.AuthenticationScheme;
+           options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+           options.RequireAuthenticatedSignIn = true;
        })
-       .AddCookie()
+       .AddCookie(options =>
+       {
+           options.LoginPath = "/login";
+           options.ExpireTimeSpan = settings.CookieTimeSpan;
+           options.SlidingExpiration = true;
+       })
        .AddSteam(options =>
        {
-           options.ApplicationKey = "WEB_API_KEY"; //TODO
-           options.CallbackPath = "/signin-steam";
+           options.ApplicationKey = Const.SteamApiKey;
        });
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
 // not using HTTPS, because all production backends _have_ to be behind a reverse proxy which will handle SSL termination
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseCors(Setup.CorsPolicyName);
 app.UseMiddleware<ExceptionHandlingMiddleware>();
