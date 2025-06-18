@@ -1,4 +1,14 @@
-import {Component, inject, model, ModelSignal, OnInit, Signal, signal, WritableSignal} from '@angular/core';
+import {
+  Component,
+  inject, input,
+  InputSignal,
+  model,
+  ModelSignal,
+  OnInit,
+  Signal,
+  signal,
+  WritableSignal
+} from '@angular/core';
 import {UserCard} from './user-card/user-card';
 import {HlmIconDirective} from '@spartan-ng/helm/icon';
 import {NgIcon, provideIcons} from '@ng-icons/core';
@@ -35,7 +45,7 @@ export class BattlePage implements OnInit {
 
   protected user1Id: Signal<string | undefined> = signal(this.steamAuthService.getStoredProfile()?.steamId);
 
-  protected user2Id: Signal<string | undefined> = signal(this.steamAuthService.getStoredProfile()?.steamId);
+  protected user2Id: InputSignal<string | undefined> = input()
 
   protected user1: WritableSignal<PlayerSummary | undefined> = signal(undefined);
   protected user2: WritableSignal<PlayerSummary | undefined> = signal(undefined);
@@ -46,7 +56,7 @@ export class BattlePage implements OnInit {
 
   async ngOnInit() {
     const u1Id = this.user1Id();
-    const u2Id = this.user2Id();
+    let u2Id = this.user2Id();
     if (!u1Id || !u2Id) {
       console.error('Steam IDs for both users are required.');
       return;
@@ -56,7 +66,6 @@ export class BattlePage implements OnInit {
         this.steamService.getUserProfile(u1Id),
         this.steamService.getUserProfile(u2Id)
       ]);
-
       this.ownedGames = await this.steamService.getMultiplayerApps(u1Id,u2Id);
       this.currentGame.set(this.ownedGames.games[0]);
       this.user1.set(user1Profile);
@@ -67,9 +76,12 @@ export class BattlePage implements OnInit {
   }
 
   protected userRating: ModelSignal<number> = model(5);
+  protected idx: number = 0;
 
 
   submitRating() {
+    this.idx++;
+    this.currentGame.set(this.ownedGames?.games[this.idx])
     console.log('Bewertung abgeschickt:', this.userRating);
   }
 }
