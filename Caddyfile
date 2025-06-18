@@ -1,0 +1,7 @@
+http://localhost:4200 {
+    reverse_proxy frontend:80
+}
+
+http://localhost:5032 {
+    reverse_proxy backend:5032
+}
