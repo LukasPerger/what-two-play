@@ -58,6 +58,7 @@ public static class Setup
                    .AllowCredentials();
         }));
 
+
         Log.Logger.Debug("Added CORS policy with client origin {ClientOrigin}", settings.ClientOrigin);
     }
     
