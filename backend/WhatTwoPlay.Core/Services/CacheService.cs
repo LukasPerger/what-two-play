@@ -1,15 +1,16 @@
 ﻿using OneOf;
 using OneOf.Types;
+using WhatTwoPlay.Cache.Model;
 using WhatTwoPlay.Cache.Repositories;
 
 namespace WhatTwoPlay.Core.Services;
 
 public interface ICacheService : ISteamService
 {
-    
+    ValueTask SaveInfo(PlayerSummariesResponse res, OwnedGamesResponse resOwnedGames, FriendListResponse resFriends);
 }
 
-internal class CacheService(IGameRepository gameRepository, IUserRepository userRepository, TagRepository tagRepository)
+internal class CacheService(IGameRepository gameRepository, IUserRepository userRepository)
     : ICacheService
 {
     public async ValueTask<OneOf<PlayerSummariesResponse, NotFound>> GetPlayerSummary(long steamId)
@@ -53,21 +54,17 @@ internal class CacheService(IGameRepository gameRepository, IUserRepository user
 
         var rawGames = await gameRepository.GetGames(user.GameAppIds);
 
-        var ownedGameTasks = rawGames.Select(async g =>
-        {
-            var tags = await tagRepository.GetTags(g.GenreIds);
-            return new OwnedGame(
-                                 g.Id,
-                                 g.Name,
-                                 0,
-                                 g.ImageUrl,
-                                 true,
-                                 0,
-                                 0,
-                                 0,
-                                 tags.Select(t => t.Name).ToArray()
-                                );
-        });
+        var ownedGameTasks = rawGames.Select(g => Task.FromResult(new OwnedGame(
+                                                                                g.Id,
+                                                                                g.Name,
+                                                                                0,
+                                                                                g.ImageUrl,
+                                                                                true,
+                                                                                0,
+                                                                                0,
+                                                                                0,
+                                                                                g.Tags.ToArray()
+                                                                               )));
 
         var games = (await Task.WhenAll(ownedGameTasks)).ToList();
 
@@ -76,26 +73,47 @@ internal class CacheService(IGameRepository gameRepository, IUserRepository user
 
     public async ValueTask<Dictionary<long, List<string>>> GetGameTags(IEnumerable<long> appIds)
     {
-        var rawGames = await gameRepository.GetGames(appIds);
+        var games = await gameRepository.GetGames(appIds);
 
-        var ownedGameTasks = rawGames.Select(async g =>
+        return games.ToDictionary(g => g.Id, g => g.Tags);
+    }
+
+    public async ValueTask SaveInfo(PlayerSummariesResponse res, OwnedGamesResponse resOwnedGames, FriendListResponse resFriends)
+    {
+        var sum = res.Response.Players[0];
+        var games = resOwnedGames.Response.Games;
+        var friends = resFriends.FriendsList.Friends;
+
+        await userRepository.SaveUser(new User()
         {
-            var tags = await tagRepository.GetTags(g.GenreIds);
-            return new OwnedGame(
-                                 g.Id,
-                                 g.Name,
-                                 0,
-                                 g.ImageUrl,
-                                 true,
-                                 0,
-                                 0,
-                                 0,
-                                 tags.Select(t => t.Name).ToArray()
-                                );
+            Id = sum.SteamId,
+            Name = sum.PersonaName,
+            ProfilePictureUrl = sum.AvatarFull,
+            GameAppIds = games.Select(g => g.AppId).ToList(),
+            FriendIds = friends.Select(f => f.SteamId).ToList()
         });
-
-        var games = (await Task.WhenAll(ownedGameTasks)).ToList();
         
-        return games.ToDictionary(g => g.AppId, g => g.Tags?.ToList() ?? []);
+        foreach (var friendResponse in friends)
+        {
+            await userRepository.SaveUser(new User()
+            {
+                Id = friendResponse.SteamId,
+                Name = friendResponse.PersonaName,
+                ProfilePictureUrl = friendResponse.AvatarUrl,
+                FriendIds = [],
+                GameAppIds = []
+            });
+        }
+
+        foreach (var game in games)
+        {
+            await gameRepository.SaveGame(new Game()
+            {
+                Id = game.AppId,
+                Name = game.Name,
+                ImageUrl = game.ImgIconUrl,
+                Tags = game.Tags?.ToList() ?? []
+            });
+        }
     }
 }

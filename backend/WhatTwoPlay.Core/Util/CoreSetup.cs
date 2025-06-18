@@ -22,5 +22,6 @@ public static class CoreSetup
             BaseAddress = new Uri(baseApi)
         });
         services.AddScoped<ISteamService, SteamService>();
+        services.AddScoped<ICacheService, CacheService>();
     }
 }

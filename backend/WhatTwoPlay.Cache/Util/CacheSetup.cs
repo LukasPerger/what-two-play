@@ -35,6 +35,5 @@ public static class CacheSetup
         });
         services.AddTransient<IGameRepository, GameRepository>();
         services.AddTransient<IUserRepository, UserRepository>();
-        services.AddTransient<ITagRepository, TagRepository>();
     }
 }
