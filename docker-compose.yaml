@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  caddy:
+    image: caddy:latest
+    ports:
+      - "4200:4200"
+      - "5032:5032"
+      - "2019:2019"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - frontend
+      - backend
+
+  backend:
+    build: ./backend
+    environment:
+      - REDIS_URL=redis://redis:6379
+    expose:
+      - "5032"
+    depends_on:
+      - redis
+
+  frontend:
+    build: ./frontend
+    expose:
+      - "80"
+
+  redis:
+    image: redis:alpine
+    volumes:
+      - redis_data:/data
+
+volumes:
+  redis_data:
+  caddy_data:
+  caddy_config:
