@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WhatTwoPlay.Core.Util;
 using WhatTwoPlay.Shared;
 using WhatTwoPlay.Util;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using JetBrains.Annotations;
+using WhatTwoPlay.Core.Services;
 
 namespace WhatTwoPlay.Controllers;
 
@@ -195,87 +193,3 @@ public sealed class SteamController(
         return JsonSerializer.Deserialize<OwnedGamesResponse>(content);
     }
 }
-
-// DTOs
-public record FriendListResponse(
-    [property: JsonPropertyName("friendslist")]
-    FriendsList FriendsList);
-
-public record FriendsList(
-    [property: JsonPropertyName("friends")]
-    List<FriendResponse> Friends);
-
-public record FriendResponse(
-    [property: JsonPropertyName("steamid")]
-    string SteamId,
-    [property: JsonPropertyName("relationship")]
-    string Relationship,
-    [property: JsonPropertyName("friend_since")]
-    int FriendSince,
-    [property: JsonPropertyName("persona_name")]
-    string PersonaName,
-    [property: JsonPropertyName("avatar_full")]
-    string AvatarUrl);
-
-public record AppDetailsResponse(
-    [property: JsonPropertyName("data")] AppDetails Data);
-
-public record AppDetails(
-    [property: JsonPropertyName("categories")]
-    List<Category> Categories,
-    [property: JsonPropertyName("genres")] List<Genre> Genres);
-
-public record Category(
-    [property: JsonPropertyName("id")] int Id,
-    [property: JsonPropertyName("description")]
-    string Description);
-
-public record Genre(
-    [property: JsonPropertyName("id")] string Id,
-    [property: JsonPropertyName("description")]
-    string Description);
-
-public record OwnedGamesResponse(
-    [property: JsonPropertyName("response")]
-    OwnedGames Response);
-
-public record OwnedGames(
-    [property: JsonPropertyName("game_count")]
-    int GameCount,
-    [property: JsonPropertyName("games")] List<OwnedGame> Games);
-
-public record OwnedGame(
-    [property: JsonPropertyName("appid")]
-    long AppId,
-    [property: JsonPropertyName("name")]
-    string Name,
-    [property: JsonPropertyName("playtime_forever")]
-    int PlaytimeForever,
-    [property: JsonPropertyName("img_icon_url")]
-    string ImgIconUrl,
-    [property: JsonPropertyName("has_community_visible_stats")]
-    bool HasCommunityVisibleStats,
-    [property: JsonPropertyName("playtime_windows_forever")]
-    int PlaytimeWindowsForever,
-    [property: JsonPropertyName("playtime_mac_forever")]
-    int PlaytimeMacForever,
-    [property: JsonPropertyName("playtime_linux_forever")]
-    int PlaytimeLinuxForever,
-    [property: JsonPropertyName("tags")]
-    string[]? Tags = null);
-
-public record PlayerSummariesResponse(
-    [property: JsonPropertyName("response")]
-    PlayerSummariesList Response);
-
-public record PlayerSummariesList(
-    [property: JsonPropertyName("players")]
-    List<PlayerSummary> Players);
-
-public record PlayerSummary(
-    [property: JsonPropertyName("steamid")]
-    string SteamId,
-    [property: JsonPropertyName("personaname")]
-    string PersonaName,
-    [property: JsonPropertyName("avatarfull")]
-    string AvatarFull);

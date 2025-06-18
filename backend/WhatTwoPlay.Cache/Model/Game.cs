@@ -6,5 +6,4 @@ public class Game
     public required string Name { get; set; }
     public required string ImageUrl { get; set; }
     public required List<long> GenreIds { get; set; }
-    public required List<long> CategoryIds { get; set; }
 }

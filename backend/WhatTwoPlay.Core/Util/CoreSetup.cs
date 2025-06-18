@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
+using WhatTwoPlay.Core.Services;
 
 namespace WhatTwoPlay.Core.Util;
 
@@ -20,5 +21,6 @@ public static class CoreSetup
         {
             BaseAddress = new Uri(baseApi)
         });
+        services.AddScoped<ISteamService, SteamService>();
     }
 }

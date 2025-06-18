@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NRedisStack;
 using NRedisStack.RedisStackCommands;
 using StackExchange.Redis;
+using WhatTwoPlay.Cache.Repositories;
 
 namespace WhatTwoPlay.Cache.Util;
 
@@ -32,5 +33,8 @@ public static class CacheSetup
 
             return db.JSON();
         });
+        services.AddTransient<IGameRepository, GameRepository>();
+        services.AddTransient<IUserRepository, UserRepository>();
+        services.AddTransient<ITagRepository, TagRepository>();
     }
 }
