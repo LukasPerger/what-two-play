@@ -10,8 +10,7 @@ public interface IGameRepository
 {
     ValueTask<Game?> GetGame(long gameId);
     ValueTask SaveGame(Game game);
-    ValueTask<IReadOnlyCollection<Game>> GetGames(params IEnumerable<long> gameIds);
-}
+    ValueTask<IReadOnlyCollection<Game>> GetGames(params IEnumerable<long> gameIds); }
 
 public sealed class GameRepository(IJsonCommandsAsync json) : IGameRepository
 {

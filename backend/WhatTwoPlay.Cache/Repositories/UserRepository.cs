@@ -8,14 +8,14 @@ namespace WhatTwoPlay.Cache.Repositories;
 
 public interface IUserRepository
 {
-    ValueTask<User?> GetUser(string userId);
+    ValueTask<User?> GetUser(long userId);
     ValueTask SaveUser(User user);
-    ValueTask<IReadOnlyCollection<User>> GetUsers(params IEnumerable<string> userIds);
+    ValueTask<IReadOnlyCollection<User>> GetUsers(params IEnumerable<long> userIds);
 }
 
 internal sealed class UserRepository(IJsonCommandsAsync json) : IUserRepository
 {
-    public async ValueTask<User?> GetUser(string userId)
+    public async ValueTask<User?> GetUser(long userId)
     {
         RedisKey cacheKey = CacheKeys.GetUserKey(userId);
 
@@ -32,7 +32,7 @@ internal sealed class UserRepository(IJsonCommandsAsync json) : IUserRepository
         await json.SetAsync(key, "$", rawJson);
     }
 
-    public async ValueTask<IReadOnlyCollection<User>> GetUsers(params IEnumerable<string> userIds)
+    public async ValueTask<IReadOnlyCollection<User>> GetUsers(params IEnumerable<long> userIds)
     {
         RedisResult[] res = await json.MGetAsync(userIds.Select(CacheKeys.GetUserKey).ToArray(), "$");
 

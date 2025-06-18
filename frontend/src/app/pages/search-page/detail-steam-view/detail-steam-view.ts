@@ -1,14 +1,13 @@
-import {Component, input, InputSignal} from '@angular/core';
-import {SteamUser} from '../../battle-page/user-card/user-card';
+import {Component, inject, input, InputSignal} from '@angular/core';
 import {
   HlmCardContentDirective,
-  HlmCardDescriptionDirective,
   HlmCardDirective,
   HlmCardHeaderDirective,
   HlmCardTitleDirective
 } from '@spartan-ng/helm/card';
-import {HlmAvatarComponent} from '@spartan-ng/helm/avatar';
 import {HlmButtonDirective} from '@spartan-ng/helm/button';
+import {FriendResponse} from '../../../../core/services/zod-types';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-detail-steam-view',
@@ -16,7 +15,6 @@ import {HlmButtonDirective} from '@spartan-ng/helm/button';
     HlmCardDirective,
     HlmCardHeaderDirective,
     HlmCardTitleDirective,
-    HlmCardDescriptionDirective,
     HlmCardContentDirective,
     HlmButtonDirective
   ],
@@ -24,13 +22,15 @@ import {HlmButtonDirective} from '@spartan-ng/helm/button';
   styleUrl: './detail-steam-view.css'
 })
 export class DetailSteamView {
-  public readonly user: InputSignal<DetailSteamUser> = input.required();
+  private readonly router = inject(Router);
+  public readonly user: InputSignal<FriendResponse> = input.required();
 
-}
-
-export interface DetailSteamUser extends SteamUser {
-  profileUrl?: string;
-  profileStatus?: string;
-  profileStatusText?: string;
-  profileStatusColor?: string;
+  async redirectToBattle() {
+    const userId = this.user().steamid;
+    if (userId) {
+      await this.router.navigate(['/battle', userId]);
+    } else {
+      console.error('User ID is not available for redirection.');
+    }
+  }
 }

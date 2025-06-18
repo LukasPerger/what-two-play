@@ -1,5 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+    </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\WhatTwoPlay.Cache\WhatTwoPlay.Cache.csproj" />
         <InternalsVisibleTo Include="WhatTwoPlay.Test"/>
@@ -12,7 +14,6 @@
 
     <ItemGroup>
       <Folder Include="Logic\" />
-      <Folder Include="Services\" />
     </ItemGroup>
 
 </Project>

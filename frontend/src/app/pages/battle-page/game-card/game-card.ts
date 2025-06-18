@@ -4,6 +4,7 @@ import {HlmBadgeDirective} from '@spartan-ng/helm/badge';
 import {NgOptimizedImage} from '@angular/common';
 import {HlmSliderImports} from '@spartan-ng/helm/slider';
 import {FormsModule} from '@angular/forms';
+import {OwnedGame} from '../../../../core/services/zod-types';
 
 @Component({
   selector: 'app-game-card',
@@ -12,18 +13,11 @@ import {FormsModule} from '@angular/forms';
     HlmBadgeDirective,
     HlmCardImports,
     NgOptimizedImage,
-    HlmSliderImports,
     FormsModule
   ],
   templateUrl: './game-card.html',
   styleUrl: './game-card.css'
 })
 export class GameCard {
-  readonly gameCardData: InputSignal<GameCardData> = input.required();
-}
-
-export interface GameCardData {
-  genres: string[];
-  tags: string[];
-  steamRating : number;
+  public readonly gameCardData: InputSignal<OwnedGame> = input.required();
 }

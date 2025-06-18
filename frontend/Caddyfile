@@ -2,4 +2,9 @@ http://localhost:80 {
     root * /var/www/html
     file_server
     try_files {path} /index.html
+            header {
+                Access-Control-Allow-Origin *
+                Access-Control-Allow-Methods "GET, OPTIONS"
+                Access-Control-Allow-Headers *
+            }
 }

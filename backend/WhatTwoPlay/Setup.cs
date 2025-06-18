@@ -14,7 +14,7 @@ public static class Setup
                                               IConfigurationManager configurationManager,
                                               bool isDev)
     {
-        services.ConfigureCore();
+        services.ConfigureCore(configurationManager);
         services.ConfigureCache(configurationManager);
     }
 
@@ -57,6 +57,7 @@ public static class Setup
                    .AllowAnyMethod()
                    .AllowCredentials();
         }));
+
 
         Log.Logger.Debug("Added CORS policy with client origin {ClientOrigin}", settings.ClientOrigin);
     }

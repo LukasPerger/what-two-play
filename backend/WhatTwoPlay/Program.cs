@@ -1,6 +1,7 @@
 using AspNet.Security.OpenId.Steam;
 using DotNetEnv;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.DataProtection;
 using WhatTwoPlay;
 using WhatTwoPlay.Shared;
 using WhatTwoPlay.Util;
@@ -10,11 +11,14 @@ Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
-bool isDev = builder.Environment.IsDevelopment();
+var isDev = builder.Environment.IsDevelopment();
 var configurationManager = builder.Configuration;
 var settings = builder.Services.LoadAndConfigureSettings(configurationManager);
 
 builder.AddLogging();
+builder.Services.AddDataProtection()
+       .PersistKeysToFileSystem(new DirectoryInfo("keys"))
+       .SetApplicationName("SteamAuthDemo");
 builder.Services.AddApplicationServices(configurationManager, isDev);
 builder.Services.AddOpenApi();
 builder.Services.AddCors(settings);
@@ -25,14 +29,10 @@ builder.Services.AddAuthentication(options =>
        {
            options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
            options.DefaultChallengeScheme = SteamAuthenticationDefaults.AuthenticationScheme;
-           options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-           options.RequireAuthenticatedSignIn = true;
        })
        .AddCookie(options =>
        {
-           options.LoginPath = "/login";
-           options.ExpireTimeSpan = settings.CookieTimeSpan;
-           options.SlidingExpiration = true;
+           options.LoginPath = "/api/auth/login";
        })
        .AddSteam(options =>
        {
@@ -43,17 +43,19 @@ builder.Services.AddAuthorization();
 var app = builder.Build();
 
 // not using HTTPS, because all production backends _have_ to be behind a reverse proxy which will handle SSL termination
+app.UseCors(Setup.CorsPolicyName);
+app.Urls.Add("http://localhost:5032");
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseCors(Setup.CorsPolicyName);
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.MapControllers();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+// Set port to 5031
 
 await app.RunAsync();
 
