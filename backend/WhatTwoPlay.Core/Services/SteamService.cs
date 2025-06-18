@@ -66,13 +66,13 @@ internal class SteamService(HttpClient steamApiClient) : ISteamService
 
         var enrichedFriends = friendList.FriendsList.Friends
                                         .Join(playerSummaries?.Response.Players ?? new List<PlayerSummary>(),
-                                              f => f.SteamId,
-                                              p => p.SteamId,
-                                              (f, p) => new FriendResponse(f.SteamId,
-                                                                           f.Relationship,
-                                                                           f.FriendSince,
-                                                                           p.PersonaName,
-                                                                           p.AvatarFull))
+                                                                                                   f => f.SteamId.ToString(),
+                                                                                                   p => p.SteamId,
+                                                                                                   (f, p) => new FriendResponse(f.SteamId,
+                                                                                                                                f.Relationship,
+                                                                                                                                f.FriendSince,
+                                                                                                                                p.PersonaName,
+                                                                                                                                p.AvatarFull))
                                         .ToList();
 
         return new FriendListResponse(new FriendsList(enrichedFriends));
@@ -149,7 +149,7 @@ public record FriendsList(
 
 public record FriendResponse(
     [property: JsonPropertyName("steamid")]
-    long SteamId,
+    string SteamId,
     [property: JsonPropertyName("relationship")]
     string Relationship,
     [property: JsonPropertyName("friend_since")]
@@ -213,7 +213,7 @@ public record PlayerSummariesList(
 
 public record PlayerSummary(
     [property: JsonPropertyName("steamid")]
-    long SteamId,
+    string SteamId,
     [property: JsonPropertyName("personaname")]
     string PersonaName,
     [property: JsonPropertyName("avatarfull")]

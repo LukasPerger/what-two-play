@@ -23,7 +23,7 @@ internal class CacheService(IGameRepository gameRepository, IUserRepository user
         }
 
         return new PlayerSummariesResponse(new PlayerSummariesList([
-            new PlayerSummary(user.Id, user.Name, user.ProfilePictureUrl)
+            new PlayerSummary(user.Id.ToString(), user.Name, user.ProfilePictureUrl)
         ]));
     }
 
@@ -39,7 +39,7 @@ internal class CacheService(IGameRepository gameRepository, IUserRepository user
         var friends = await userRepository.GetUsers(user.FriendIds);
 
         return new FriendListResponse(new FriendsList(friends
-                                                      .Select(f => new FriendResponse(f.Id, string.Empty, 0, f.Name,
+                                                      .Select(f => new FriendResponse(f.Id.ToString(), string.Empty, 0, f.Name,
                                                                f.ProfilePictureUrl)).ToList()));
     }
 
@@ -86,18 +86,18 @@ internal class CacheService(IGameRepository gameRepository, IUserRepository user
 
         await userRepository.SaveUser(new User()
         {
-            Id = sum.SteamId,
+            Id = long.Parse(sum.SteamId),
             Name = sum.PersonaName,
             ProfilePictureUrl = sum.AvatarFull,
             GameAppIds = games.Select(g => g.AppId).ToList(),
-            FriendIds = friends.Select(f => f.SteamId).ToList()
+            FriendIds = friends.Select(f => long.Parse(f.SteamId)).ToList()
         });
         
         foreach (var friendResponse in friends)
         {
             await userRepository.SaveUser(new User()
             {
-                Id = friendResponse.SteamId,
+                Id = long.Parse(friendResponse.SteamId),
                 Name = friendResponse.PersonaName,
                 ProfilePictureUrl = friendResponse.AvatarUrl,
                 FriendIds = [],
