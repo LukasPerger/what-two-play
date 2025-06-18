@@ -1,0 +1,67 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "preserve",
+    "paths": {
+      "@spartan-ng/helm/alert": [
+        "./src/libs/ui/ui-alert-helm/src/index.ts"
+      ],
+      "@spartan-ng/helm/button": [
+        "./src/libs/ui/ui-button-helm/src/index.ts"
+      ],
+      "@spartan-ng/helm/card": [
+        "./src/libs/ui/ui-card-helm/src/index.ts"
+      ],
+      "@spartan-ng/helm/tooltip": [
+        "./src/libs/ui/ui-tooltip-helm/src/index.ts"
+      ],
+      "@spartan-ng/helm/typography": [
+        "./src/libs/ui/ui-typography-helm/src/index.ts"
+      ],
+      "@spartan-ng/helm/icon": [
+        "./src/libs/ui/ui-icon-helm/src/index.ts"
+      ],
+      "@spartan-ng/helm/popover": [
+        "./src/libs/ui/ui-popover-helm/src/index.ts"
+      ],
+      "@spartan-ng/helm/slider": [
+        "./src/libs/ui/ui-slider-helm/src/index.ts"
+      ],
+      "@spartan-ng/helm/command": [
+        "./src/libs/ui/ui-command-helm/src/index.ts"
+      ],
+      "@spartan-ng/helm/avatar": [
+        "./src/libs/ui/ui-avatar-helm/src/index.ts"
+      ],
+      "@spartan-ng/helm/badge": [
+        "./src/libs/ui/ui-badge-helm/src/index.ts"
+      ]
+    }
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "typeCheckHostBindings": true,
+    "strictTemplates": true
+  },
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
+}

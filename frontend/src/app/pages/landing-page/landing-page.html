@@ -1,0 +1,83 @@
+<div class="h-dvh bg-neutral-950 text-white">
+  <div class="relative isolate px-6 pt-14 lg:px-8">
+    <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80">
+      <div
+        class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"></div>
+    </div>
+
+    <div class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
+      <div class="text-center">
+        <h1
+          class="text-4xl font-bold tracking-tight sm:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600">
+          WhatTwoPlay
+        </h1>
+        <p class="mt-6 text-lg leading-8 text-neutral-300">
+          Find the perfect game to play with your friends. Connect your Steam library, discover shared games, and never
+          waste time deciding what to play again.
+        </p>
+        <div class="mt-10 flex items-center justify-center gap-x-6">
+          <button
+            (click)="loginWithSteam()"
+          class="flex flex-row *:m-2 cursor-pointer" hlmBtn>
+            <svg [cIcon]="icons.cibSteam" class="w-4 h-4"></svg>
+            Sign in with Steam
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="mx-auto max-w-7xl px-6 lg:px-8 py-24 sm:py-32">
+      <div class="mx-auto max-w-2xl lg:text-center">
+        <h2 class="text-base font-semibold leading-7 text-[#66c0f4]">Why WhatTwoPlay?</h2>
+        <p class="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
+          Everything you need to play together
+        </p>
+      </div>
+      <div class="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
+        <dl class="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-3">
+          <div class="flex flex-col">
+            <dt class="flex items-center gap-x-3 text-base font-semibold leading-7 text-white">
+              <svg class="h-5 w-5 flex-none text-[#66c0f4]" viewBox="0 0 20 20" fill="currentColor">
+                <path
+                  d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"/>
+              </svg>
+              Shared Library
+            </dt>
+            <dd class="mt-4 flex flex-auto flex-col text-base leading-7 text-neutral-400">
+              <p class="flex-auto">Automatically discover games that you and your friends own together.</p>
+            </dd>
+          </div>
+          <div class="flex flex-col">
+            <dt class="flex items-center gap-x-3 text-base font-semibold leading-7 text-white">
+              <svg class="h-5 w-5 flex-none text-[#66c0f4]" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 100-12 6 6 0 000 12z"
+                      clip-rule="evenodd"/>
+                <path fill-rule="evenodd"
+                      d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                      clip-rule="evenodd"/>
+              </svg>
+              Quick Match
+            </dt>
+            <dd class="mt-4 flex flex-auto flex-col text-base leading-7 text-neutral-400">
+              <p class="flex-auto">Get instant recommendations based on your shared game library and preferences.</p>
+            </dd>
+          </div>
+          <div class="flex flex-col">
+            <dt class="flex items-center gap-x-3 text-base font-semibold leading-7 text-white">
+              <svg class="h-5 w-5 flex-none text-[#66c0f4]" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                <path fill-rule="evenodd"
+                      d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+                      clip-rule="evenodd"/>
+              </svg>
+              Smart Filters
+            </dt>
+            <dd class="mt-4 flex flex-auto flex-col text-base leading-7 text-neutral-400">
+              <p class="flex-auto">Filter games by genre, playtime, and more to find the perfect match.</p>
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </div>
+</div>

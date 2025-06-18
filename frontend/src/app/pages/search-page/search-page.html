@@ -1,0 +1,42 @@
+<div class="flex flex-row h-full">
+  <brn-popover>
+    <hlm-command class="w-[400px] p-0">
+      <hlm-command-search>
+        <ng-icon hlm name="lucideSearch"/>
+        <input
+          [ngModel]="searchQuery()"
+          (ngModelChange)="searchQuery.set($event)"
+          placeholder="Nach Steam-Freunden suchen..."
+          hlm-command-search-input
+        />
+      </hlm-command-search>
+
+      <hlm-command-list>
+        <hlm-command-group>
+          @for (friend of filteredFriends; track friend.profileId) {
+            <button hlm-command-item [value]="friend.profileName"
+                    class="flex items-center gap-4 cursor-pointer"
+                    (click)="selectedFriend.set(friend)">
+              <img [src]="friend.profileImageLink" [alt]="friend.profileName" class="w-8 h-8 rounded-full">
+              <div class="flex flex-col">
+                <span class="font-medium">{{ friend.profileName }}</span>
+                <span class="text-sm text-gray-500">{{ friend.profileId }}</span>
+              </div>
+            </button>
+          } @empty {
+            <div class="py-6 text-center text-sm">
+              Keine Steam-Benutzer gefunden
+            </div>
+          }
+        </hlm-command-group>
+      </hlm-command-list>
+    </hlm-command>
+  </brn-popover>
+
+  @let selected = selectedFriend();
+  @if (selected) {
+    <div class="flex flex-row justify-center items-center w-full h-full">
+      <app-detail-steam-view [user]="selected"/>
+    </div>
+  }
+</div>

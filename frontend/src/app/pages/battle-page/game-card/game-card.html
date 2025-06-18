@@ -1,0 +1,52 @@
+<div hlmCard class="flex flex-row w-[900px] h-[250px] bg-card overflow-hidden">
+  <!-- Game Image Section -->
+  <div class="relative w-[445px] h-full flex items-center justify-center border-r border-border/50 bg-muted/20">
+    <img
+      ngSrc="./question-mark.png"
+      [width]="445"
+      [height]="250"
+      priority
+      alt="Hidden Game"
+      class="object-contain w-full h-full p-6"
+    />
+  </div>
+
+  <!-- Content Section -->
+  <div class="flex-1 flex flex-col p-6 bg-gradient-to-r from-muted/10">
+    <!-- Title -->
+    <div class="mb-4">
+      <h3 class="text-2xl font-bold tracking-tight mb-1">???</h3>
+      <div class="h-[2px] w-16 bg-primary/50"></div>
+    </div>
+
+    <!-- Info Grid -->
+    <div class="grid grid-cols-2 gap-6">
+      <!-- Left Column -->
+      <div class="space-y-4">
+        <div>
+          <h4 class="text-sm font-semibold text-muted-foreground mb-2">Genres</h4>
+          <div class="flex flex-wrap gap-1.5">
+            @for (genre of gameCardData().genres; track genre) {
+              <span hlmBadge variant="outline" class="bg-background/50">{{genre}}</span>
+            }
+          </div>
+        </div>
+
+        <div>
+          <h4 class="text-sm font-semibold text-muted-foreground mb-2">Steam Rating</h4>
+          <span hlmBadge variant="default" class="text-lg bg-primary/80">{{gameCardData().steamRating}}%</span>
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div>
+        <h4 class="text-sm font-semibold text-muted-foreground mb-2">Tags</h4>
+        <div class="flex flex-wrap gap-1.5">
+          @for (tag of gameCardData().tags; track tag) {
+            <span hlmBadge class="bg-secondary text-secondary-foreground">{{tag}}</span>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
