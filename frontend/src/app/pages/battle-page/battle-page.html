@@ -1,14 +1,26 @@
 <div class="flex flex-col items-center justify-center gap-8 min-h-screen">
   <div class="flex items-center justify-center gap-8">
-    <app-user-card [user]="user1" />
-    <ng-icon hlm size='sm' name="lucideSwords" />
-    <app-user-card [user]="user2" />
+
+    @let u1 = user1();
+    @let u2 = user2();
+    @if (u1 && u2) {
+      <app-user-card [user]="u1"/>
+      <ng-icon hlm size='sm' name="lucideSwords"/>
+      <app-user-card [user]="u2"/>
+    } @else {
+      <p class="text-gray-500">Lade Benutzerinformationen...</p>
+    }
   </div>
-  <app-game-card [gameCardData]="gameCardData" />
+  @let game = currentGame();
+  @if (game) {
+    <app-game-card [gameCardData]="game"/>
+  } @else {
+    <p class="text-gray-500">Lade Spieldaten...</p>
+  }
 
   <div class="w-[800px] mt-8 space-y-4">
     <div>
-      <h4 class="text-sm font-semibold mb-2">Ihre Bewertung: {{userRating()}}/10</h4>
+      <h4 class="text-sm font-semibold mb-2">Ihre Bewertung: {{ userRating() }}/10</h4>
       <div class="flex flex-row items-center justify-between *:m-4">
         <ng-icon hlm size="sm" name="lucideThumbsDown"></ng-icon>
         <brn-slider

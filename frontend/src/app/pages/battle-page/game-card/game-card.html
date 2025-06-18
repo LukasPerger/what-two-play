@@ -21,22 +21,6 @@
 
     <!-- Info Grid -->
     <div class="grid grid-cols-2 gap-6">
-      <!-- Left Column -->
-      <div class="space-y-4">
-        <div>
-          <h4 class="text-sm font-semibold text-muted-foreground mb-2">Genres</h4>
-          <div class="flex flex-wrap gap-1.5">
-            @for (genre of gameCardData().genres; track genre) {
-              <span hlmBadge variant="outline" class="bg-background/50">{{genre}}</span>
-            }
-          </div>
-        </div>
-
-        <div>
-          <h4 class="text-sm font-semibold text-muted-foreground mb-2">Steam Rating</h4>
-          <span hlmBadge variant="default" class="text-lg bg-primary/80">{{gameCardData().steamRating}}%</span>
-        </div>
-      </div>
 
       <!-- Right Column -->
       <div>

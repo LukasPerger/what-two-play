@@ -14,6 +14,32 @@ public sealed class SteamController(
 {
     private readonly HttpClient _steamApiClient = steamApiClient;
 
+    // Get single user details
+    // Example: GET /api/steam/76561198400371023
+    [HttpGet("{userId:long}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async ValueTask<ActionResult<PlayerSummariesResponse>> GetUserDetails(long userId)
+    {
+        var response = await _steamApiClient
+            .GetAsync($"ISteamUser/GetPlayerSummaries/v0002/?key={Const.SteamApiKey}&steamids={userId}");
+
+        if (!response.IsSuccessStatusCode)
+        {
+            return NotFound("User not found");
+        }
+
+        var content = await response.Content.ReadAsStringAsync();
+        var playerSummaries = JsonSerializer.Deserialize<PlayerSummariesResponse>(content);
+
+        if (playerSummaries?.Response.Players == null || !playerSummaries.Response.Players.Any())
+        {
+            return NotFound("User not found");
+        }
+
+        return Ok(playerSummaries);
+    }
+
     // Get user friend list
     // Example: GET /api/steam/76561198400371023/friends
     [HttpGet("{userId:long}/friends")]
@@ -45,19 +71,15 @@ public sealed class SteamController(
         var playerSummaries = JsonSerializer.Deserialize<PlayerSummariesResponse>(summariesContent);
 
         var enrichedFriends = friendList.FriendsList.Friends
-            .Join(
-                playerSummaries?.Response.Players ?? new List<PlayerSummary>(),
-                f => f.SteamId,
-                p => p.SteamId,
-                (f, p) => new FriendResponse(
-                    f.SteamId,
-                    f.Relationship,
-                    f.FriendSince,
-                    p.PersonaName,
-                    p.AvatarFull
-                )
-            )
-            .ToList();
+                                        .Join(playerSummaries?.Response.Players ?? new List<PlayerSummary>(),
+                                              f => f.SteamId,
+                                              p => p.SteamId,
+                                              (f, p) => new FriendResponse(f.SteamId,
+                                                                           f.Relationship,
+                                                                           f.FriendSince,
+                                                                           p.PersonaName,
+                                                                           p.AvatarFull))
+                                        .ToList();
 
         return Ok(new FriendListResponse(new FriendsList(enrichedFriends)));
     }
@@ -105,13 +127,14 @@ public sealed class SteamController(
             {
                 return NotFound("No apps found");
             }
-            
+
             var gameTags = await GetGameTags(appIds);
-            
+
             var multiplayerGames = commonGames
-                                   .Where(g => gameTags.TryGetValue(g.AppId, out var tags) &&
-                                               tags.Contains("Multiplayer"))
-                                   .ToList();
+                .Where(g => gameTags.TryGetValue(g.AppId, out var tags) &&
+                           tags.Contains("Multiplayer"))
+                .Select(g => g with { Tags = gameTags.GetValueOrDefault(g.AppId, new List<string>()).ToArray() })
+                .ToList();
 
             return Ok(new OwnedGamesResponse(new OwnedGames(multiplayerGames.Count, multiplayerGames)));
         }
@@ -195,24 +218,20 @@ public record FriendResponse(
     string AvatarUrl);
 
 public record AppDetailsResponse(
-    [property: JsonPropertyName("data")]
-    AppDetails Data);
+    [property: JsonPropertyName("data")] AppDetails Data);
 
 public record AppDetails(
     [property: JsonPropertyName("categories")]
     List<Category> Categories,
-    [property: JsonPropertyName("genres")]
-    List<Genre> Genres);
+    [property: JsonPropertyName("genres")] List<Genre> Genres);
 
 public record Category(
-    [property: JsonPropertyName("id")]
-    int Id,
+    [property: JsonPropertyName("id")] int Id,
     [property: JsonPropertyName("description")]
     string Description);
 
 public record Genre(
-    [property: JsonPropertyName("id")]
-    string Id,
+    [property: JsonPropertyName("id")] string Id,
     [property: JsonPropertyName("description")]
     string Description);
 
@@ -223,8 +242,7 @@ public record OwnedGamesResponse(
 public record OwnedGames(
     [property: JsonPropertyName("game_count")]
     int GameCount,
-    [property: JsonPropertyName("games")]
-    List<OwnedGame> Games);
+    [property: JsonPropertyName("games")] List<OwnedGame> Games);
 
 public record OwnedGame(
     [property: JsonPropertyName("appid")]
@@ -242,7 +260,9 @@ public record OwnedGame(
     [property: JsonPropertyName("playtime_mac_forever")]
     int PlaytimeMacForever,
     [property: JsonPropertyName("playtime_linux_forever")]
-    int PlaytimeLinuxForever);
+    int PlaytimeLinuxForever,
+    [property: JsonPropertyName("tags")]
+    string[]? Tags = null);
 
 public record PlayerSummariesResponse(
     [property: JsonPropertyName("response")]
