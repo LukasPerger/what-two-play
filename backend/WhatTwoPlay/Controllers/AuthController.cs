@@ -10,8 +10,11 @@ using WhatTwoPlay.Util;
 namespace WhatTwoPlay.Controllers;
 
 [Route("/api/auth")]
-public sealed class AuthController(ILogger<AuthController> logger) : BaseController
+public sealed class AuthController(
+    ILogger<AuthController> logger) : BaseController
 {
+    private readonly ILogger<AuthController> _logger = logger;
+
     [HttpGet]
     [Route("login")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -26,7 +29,6 @@ public sealed class AuthController(ILogger<AuthController> logger) : BaseControl
     [HttpGet("me")]
     public IActionResult Me()
     {
-        logger.LogInformation("Me");
         if (!User.Identity?.IsAuthenticated ?? true)
         {
             return Unauthorized("Not logged in");
@@ -37,7 +39,7 @@ public sealed class AuthController(ILogger<AuthController> logger) : BaseControl
 
         return Ok(new
         {
-            steamId,
+            steamId = steamId?.Split('/').LastOrDefault(),
             name
         });
     }

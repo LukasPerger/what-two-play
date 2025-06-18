@@ -13,14 +13,14 @@
 
       <hlm-command-list>
         <hlm-command-group>
-          @for (friend of filteredFriends; track friend.profileId) {
-            <button hlm-command-item [value]="friend.profileName"
+          @for (friend of filteredFriends(); track friend.steamid) {
+            <button hlm-command-item [value]="friend.persona_name"
                     class="flex items-center gap-4 cursor-pointer"
                     (click)="selectedFriend.set(friend)">
-              <img [src]="friend.profileImageLink" [alt]="friend.profileName" class="w-8 h-8 rounded-full">
+              <img [src]="friend.avatar_full" [alt]="friend.persona_name" class="w-8 h-8 rounded-full">
               <div class="flex flex-col">
-                <span class="font-medium">{{ friend.profileName }}</span>
-                <span class="text-sm text-gray-500">{{ friend.profileId }}</span>
+                <span class="font-medium">{{ friend.persona_name }}</span>
+                <span class="text-sm text-gray-500">{{ friend.steamid }}</span>
               </div>
             </button>
           } @empty {

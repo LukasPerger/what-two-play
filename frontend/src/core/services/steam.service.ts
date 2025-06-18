@@ -1,32 +1,42 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {ServiceBase} from './base-service';
+import {FriendListResponse, friendListResponseSchema} from './zod-types';
+import {SteamAuthService} from './steam-auth.service';
 import {firstValueFrom} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SteamService extends ServiceBase {
+
+  private readonly steamAuthService = inject(SteamAuthService);
+
   protected override get controller(): string {
-    return 'auth'
+    return 'steam'
   }
 
-  public async loginSteam(): Promise<void> {
-    // redirect to the Steam login URL
-    window.location.href = this.buildUrl('login');
-  }
 
-  public async getMySteamProfile(): Promise<string> {
-    // fetch the user's Steam profile
-    const response = await firstValueFrom(this.http.get<string>(this.buildUrl('me'), {
-      observe: 'response',
-      withCredentials: true
-    }));
+  public async getFriends(): Promise<FriendListResponse> {
+    const steamId = this.steamAuthService.getStoredProfile()?.steamId;
 
-    if (!this.isSuccessStatusCode(response)) {
-      throw new Error('Failed to fetch Steam profile');
+    if (!steamId) {
+      throw new Error('Steam ID is not available. Please log in first.');
     }
 
-    console.log(response);
-    return response.body as string;
+    const url = this.buildUrl(steamId + '/friends');
+    const response = await firstValueFrom(this.http.get(url, {observe: 'response'}));
+
+
+    if (!this.isSuccessStatusCode(response)) {
+      throw new Error('Failed to fetch friends list');
+    }
+
+    const responseBody = friendListResponseSchema.parse(response.body) as FriendListResponse;
+    if (!responseBody || !responseBody.friendslist) {
+      throw new Error('No friends data received');
+    }
+
+    return responseBody;
   }
+
 }

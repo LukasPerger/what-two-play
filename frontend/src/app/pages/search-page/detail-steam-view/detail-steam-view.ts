@@ -9,6 +9,7 @@ import {
 } from '@spartan-ng/helm/card';
 import {HlmAvatarComponent} from '@spartan-ng/helm/avatar';
 import {HlmButtonDirective} from '@spartan-ng/helm/button';
+import {FriendResponse} from '../../../../core/services/zod-types';
 
 @Component({
   selector: 'app-detail-steam-view',
@@ -16,7 +17,6 @@ import {HlmButtonDirective} from '@spartan-ng/helm/button';
     HlmCardDirective,
     HlmCardHeaderDirective,
     HlmCardTitleDirective,
-    HlmCardDescriptionDirective,
     HlmCardContentDirective,
     HlmButtonDirective
   ],
@@ -24,13 +24,6 @@ import {HlmButtonDirective} from '@spartan-ng/helm/button';
   styleUrl: './detail-steam-view.css'
 })
 export class DetailSteamView {
-  public readonly user: InputSignal<DetailSteamUser> = input.required();
+  public readonly user: InputSignal<FriendResponse> = input.required();
 
-}
-
-export interface DetailSteamUser extends SteamUser {
-  profileUrl?: string;
-  profileStatus?: string;
-  profileStatusText?: string;
-  profileStatusColor?: string;
 }

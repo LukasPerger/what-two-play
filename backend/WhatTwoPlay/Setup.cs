@@ -14,7 +14,7 @@ public static class Setup
                                               IConfigurationManager configurationManager,
                                               bool isDev)
     {
-        services.ConfigureCore();
+        services.ConfigureCore(configurationManager);
         services.ConfigureCache(configurationManager);
     }
 

@@ -2,7 +2,7 @@ import {Component, inject} from '@angular/core';
 import {HlmButtonDirective} from '@spartan-ng/helm/button';
 import {cibSteam} from '@coreui/icons';
 import {IconDirective} from '@coreui/icons-angular';
-import {SteamService} from '../../../core/services/steam.service';
+import {SteamAuthService} from '../../../core/services/steam-auth.service';
 
 @Component({
   selector: 'app-landing-page',
@@ -14,7 +14,7 @@ import {SteamService} from '../../../core/services/steam.service';
   styleUrl: './landing-page.css'
 })
 export class LandingPage {
-  protected readonly steamService = inject(SteamService);
+  protected readonly steamService = inject(SteamAuthService);
   protected readonly icons = {cibSteam};
 
   async loginWithSteam() {

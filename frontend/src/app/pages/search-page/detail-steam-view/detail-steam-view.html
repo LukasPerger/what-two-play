@@ -1,33 +1,24 @@
 <div class="min-h-screen bg-background flex flex-col min-w-4xl justify-center items-center">
-  <div class="flex-1 container mx-auto p-8">
-    <div hlmCard class="w-full max-w-4xl mx-auto h-full flex flex-col">
-      <div hlmCardHeader class="flex items-center gap-6 p-8">
-        <div class="relative w-32 h-32 flex-shrink-0">
-          <img [src]="user().profileImageLink"
-               alt="{{user().profileName}}"
-               class="w-full h-full object-cover rounded-full border-4 border-primary/10">
+    <div class="flex-1 container mx-auto p-8">
+        <div hlmCard class="w-full max-w-4xl mx-auto h-full flex flex-col">
+            <div hlmCardHeader class="flex items-center gap-6 p-8">
+                <div class="relative w-32 h-32 flex-shrink-0">
+                    <img [src]="user().avatar_full"
+                         alt="{{user().persona_name}}"
+                         class="w-full h-full object-cover rounded-full border-4 border-primary/10">
+                </div>
+                <div class="space-y-2 flex flex-col justify-center items-center">
+                    <h3 hlmCardTitle class="text-4xl font-bold">{{ user().persona_name }}</h3>
+                </div>
+            </div>
 
-          <span [style.color]="user().profileStatusColor"
-                [style.background-color]="user().profileStatusColor + '20'"
-                class="absolute bottom-0 right-0 w-8 h-8 rounded-full border-4 border-background flex items-center justify-center">
-            ●
-          </span>
+            <div hlmCardContent class="flex-1 px-8 space-y-6">
+                <div class="p-8 flex justify-center">
+                    <button hlmBtn variant="default" size="lg" class="w-full max-w-md text-lg font-semibold">
+                        Request battle
+                    </button>
+                </div>
+            </div>
         </div>
-        <div class="space-y-2 flex flex-col justify-center items-center">
-          <h3 hlmCardTitle class="text-4xl font-bold">{{ user().profileName }}</h3>
-          <p hlmCardDescription class="text-muted-foreground text-lg flex items-center gap-2">
-            {{ user().profileStatusText || 'Offline' }}
-          </p>
-        </div>
-      </div>
-
-      <div hlmCardContent class="flex-1 px-8 space-y-6">
-        <div class="p-8 flex justify-center">
-          <button hlmBtn variant="default" size="lg" class="w-full max-w-md text-lg font-semibold">
-            Request battle
-          </button>
-        </div>
-      </div>
     </div>
-  </div>
 </div>
